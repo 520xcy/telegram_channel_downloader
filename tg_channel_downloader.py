@@ -22,7 +22,8 @@ max_num = 5  # 同时下载数量
 # filter file name/文件名过滤
 filter_list = ['你好，欢迎加入 Quantumu', '\n']
 # filter chat id /过滤某些频道不下载
-blacklist = [1388464914,]
+whitelist = [499447099] #白名单优先，设置白名单后黑名单无效
+blacklist = [] #黑名单
 donwload_all_chat = False # 监控所有你加入的频道，收到的新消息如果包含媒体都会下载，默认关闭
 filter_file_name = ['jpg', ]
 proxy = {
@@ -219,6 +220,8 @@ async def all_chat_download(update):
     if message.media:
         chat_id = update.message.to_id
         entity = await client.get_entity(chat_id)
+        if whitelist and (not entity.id in whitelist):
+            return
         if entity.id in blacklist:
             return
         chat_title = entity.title
