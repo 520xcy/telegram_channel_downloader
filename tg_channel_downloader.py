@@ -1,4 +1,4 @@
-# !/usr/bin/env python3
+# !/usr/bin/env python3.7
 import difflib
 import os
 import re
@@ -6,34 +6,37 @@ import time
 import asyncio
 import asyncio.subprocess
 import logging
+import socks
+
 from telethon import TelegramClient, events, errors
 from telethon.tl.types import MessageMediaWebPage
 
 #***********************************************************************************#
-api_id = 1234567   # your telegram api id
-api_hash = '1234567890abcdefgh'  # your telegram api hash
-bot_token = '1234567890:ABCDEFGHIJKLMNOPQRST'  # your bot_token
-admin_id = 1234567890  # your chat id
-save_path = '/usr/downloads'  # file save path
-upload_file_set = True  # set upload file to google drive
+api_id = 2442549   # your telegram api id
+api_hash = 'f7344ff578d2704d2ad9ca3beb977ef1'  # your telegram api hash
+bot_token = '1596491120:AAEPb-ymYd-FJnG11_a9ngFcLdsg5Co_bHY'  # your bot_token
+admin_id = 670129231  # your chat id
+save_path = os.getcwd() + '/downloads'  # file save path
+upload_file_set = False  # set upload file to google drive
 drive_id = '5FyJClXmsqNw0-Rz19'  # google teamdrive id
 drive_name = 'gc'  # rclone drive name
 max_num = 5  # 同时下载数量
 # filter file name/文件名过滤
-filter_list = ['你好，欢迎加入 Quantumu', '\n']
-# filter chat id /过滤某些频道不下载
-whitelist = [499447099] #白名单优先，设置白名单后黑名单无效
+filter_list = ['\n']
+# 过滤某些频道不下载
+whitelist = [] #白名单优先，设置白名单后黑名单无效
 blacklist = [] #黑名单
-donwload_all_chat = False # 监控所有你加入的频道，收到的新消息如果包含媒体都会下载，默认关闭
-filter_file_name = ['jpg', ]
-proxy = {
-    'proxy_type': 'socks5', # (mandatory) protocol to use (see above)
-    'addr': '192.168.11.238',      # (mandatory) proxy IP address
-    'port': 1080,           # (mandatory) proxy port number
-    'username': '',      # (optional) username if the proxy requires auth
-    'password': '',      # (optional) password if the proxy requires auth
-    'rdns': True            # (optional) whether to use remote or local resolve, default remote
-}
+donwload_all_chat = True # 监控所有你加入的频道，收到的新消息如果包含媒体都会下载，默认关闭
+filter_file_name = []
+proxy = (socks.SOCKS5, '192.168.12.230', 1080, True, '', '')
+# proxy = {
+#     'proxy_type': 'socks5', # (mandatory) protocol to use (see above)
+#     'addr': '192.168.11.238',      # (mandatory) proxy IP address
+#     'port': 1080,           # (mandatory) proxy port number
+#     'username': '',      # (optional) username if the proxy requires auth
+#     'password': '',      # (optional) password if the proxy requires auth
+#     'rdns': True            # (optional) whether to use remote or local resolve, default remote
+# }
 #***********************************************************************************#
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
