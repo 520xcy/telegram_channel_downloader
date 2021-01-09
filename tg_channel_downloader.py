@@ -25,6 +25,14 @@ filter_list = ['你好，欢迎加入 Quantumu', '\n']
 blacklist = [1388464914,]
 donwload_all_chat = False # 监控所有你加入的频道，收到的新消息如果包含媒体都会下载，默认关闭
 filter_file_name = ['jpg', ]
+proxy = {
+    'proxy_type': 'socks5', # (mandatory) protocol to use (see above)
+    'addr': '192.168.11.238',      # (mandatory) proxy IP address
+    'port': 1080,           # (mandatory) proxy port number
+    'username': '',      # (optional) username if the proxy requires auth
+    'password': '',      # (optional) password if the proxy requires auth
+    'rdns': True            # (optional) whether to use remote or local resolve, default remote
+}
 #***********************************************************************************#
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -259,9 +267,9 @@ async def all_chat_download(update):
 
 if __name__ == '__main__':
     bot = TelegramClient('telegram_channel_downloader_bot',
-                         api_id, api_hash).start(bot_token=str(bot_token))
+                         api_id, api_hash, proxy=proxy).start(bot_token=str(bot_token))
     client = TelegramClient(
-        'telegram_channel_downloader', api_id, api_hash).start()
+        'telegram_channel_downloader', api_id, api_hash, proxy=proxy).start()
     bot.add_event_handler(handler)
     if donwload_all_chat:
       client.add_event_handler(all_chat_download)
