@@ -16,7 +16,7 @@ api_id = 2442549   # your telegram api id
 api_hash = 'f7344ff578d2704d2ad9ca3beb977ef1'  # your telegram api hash
 bot_token = '1596491120:AAEPb-ymYd-FJnG11_a9ngFcLdsg5Co_bHY'  # your bot_token
 admin_id = 670129231  # your chat id
-save_path = os.getcwd() + '/downloads'  # file save path
+save_path = os.path.join(os.getcwd(), 'downloads')  # file save path
 upload_file_set = False  # set upload file to google drive
 drive_id = '5FyJClXmsqNw0-Rz19'  # google teamdrive id
 drive_name = 'gc'  # rclone drive name
@@ -39,7 +39,7 @@ proxy = (socks.SOCKS5, '192.168.12.230', 1080, True, '', '')
 # }
 #***********************************************************************************#
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+logging.basicConfig(filename=os.path.join(os.getcwd(), 'status.log'), format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.WARNING)
 logger = logging.getLogger(__name__)
 queue = asyncio.Queue()
@@ -127,6 +127,7 @@ async def worker(name):
                                                           limit=1):
                 await queue.put((new_message, chat_title, entity, file_name))
         except Exception as e:
+            logging.warning(f'{get_local_time()} - {file_name} {e}')
             print(f"{get_local_time()} - {file_name} {e}")
             await bot.send_message(admin_id, f'Error!\n\n{e}\n\n{file_name}')
         finally:
